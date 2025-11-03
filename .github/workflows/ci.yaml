@@ -1,0 +1,40 @@
+name: Node Js application
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: codebase/rdicidr-0.1.0
+    
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: setup Node Js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '15'
+          cache: 'npm'
+          cache-dependency-path: 'codebase/rdicidr-0.1.0/package-lock.json'
+      
+      - name: Install dependencies
+        run: npm Install
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run and check Format
+        run: |
+          npx prettier --write
+          npm run prettier
+
+      - name: Run Jest Tests
+        run: CI=true npm run test
+      
+      - name: Build application
+        run: npm run build
