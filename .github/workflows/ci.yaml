@@ -30,7 +30,7 @@ jobs:
 
       - name: Run and check Format
         run: |
-          npx prettier --write
+          npx prettier --write ./src/
           npm run prettier
 
       - name: Run Jest Tests
